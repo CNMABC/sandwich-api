@@ -1,34 +1,38 @@
 import express from 'express'
 import mongoose from 'mongoose'
+import SandwichOrder from './models/SandwichOrder.js'
+import { dbURI, port } from './config/environment.js'
+import router from './router.js'
 
 const app = express()
 const port = 4000
 const dbURI = 'mongodb://localhost/sandwich-api'
 
-//definition of the schema
-const scheduleSchema = new mongoose.Schema({
-  sequenceNumber: { type: Number, required: true, unique: true },
-  task: { type: String, required: true, maxlength: 20 },
-  recipient: { type: String, required: true, maxlength: 20 }
-}, {
-  timestamps: true,
+app.use(express.json())// convert incoming JSON into JS and store on the req.body so we can access the data 
+
+// middleware for router
+app.use(router)
+
+// delete a sandwich - remove a sandwich 
+app.delete('/schedule/:id', async (req,res) => {
+  try {
+    const { id } = req.params
+    // find the sandwich required
+    const sandwichToDelete = await SandwichOrder.findById(id)
+    if (!sandwichToDelete) throw new Error()
+    await sandwichToDelete.remove()
+    return res.sendStatus(204)
+  } catch (err) {
+    console.log(err)
+    return res.status(404).json({ 'message': 'not found' })
+  }
 })
 
-
-// Defining the model 
-const sandwichOrder = mongoose.model('sandwichOrder', scheduleSchema)
 
 // Logger -> to console log the incoming request method and the request url
 app.use((req, _res, next) => {
   console.log(`🚨 Incoming request: METHOD: ${req.method}, URL: ${req.url}`)
   next()
-})
-
-// Index route 
-app.get('/schedule', async (_req, res) => {
-  const schedule = await sandwichOrder.find()
-  console.log('schedule', schedule)
-  return res.status(200).json(schedule)
 })
 
 const startServer = async () => {

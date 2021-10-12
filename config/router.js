@@ -8,7 +8,7 @@ router.route('/schedule')
 
 router.route('/schedule/:id')
   .get(getOneSandwich)
-  
-  
+
+
 
 export default router

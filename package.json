@@ -11,5 +11,7 @@
   "scripts": {
     "serve": "npx nodemon index.js",
     "seed": "node db/seeds.js"
-  }
+  },
+  "repository": "https://github.com/CNMABC/sandwich-api.git",
+  "author": "Cecilia Nunn <cecilia.nunn@gmail.com>"
 }

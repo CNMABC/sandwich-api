@@ -2,14 +2,14 @@ import SandwichOrder from '../models/sandwichOrder.js'
 
 // Index route 
 export const getAllRequests = async (_req, res) => {
-  const Schedule = await SandwichOrder.find()
-  console.log('Schedule', Schedule)
-  return res.status(200).json(Schedule)
-})
+  const schedule = await SandwichOrder.find()
+  console.log('Schedule', schedule)
+  return res.status(200).json(schedule)
+}
 
 
 // Create route - add a new sandwich request 
-app.post('/schedule', async (req, res) => {
+export const addRequest = async (req, res) => {
   try {
     const sandwichToAdd = await SandwichOrder.create(req.body)
     console.log('SANDWICH TO ADD', sandwichToAdd)
@@ -18,12 +18,12 @@ app.post('/schedule', async (req, res) => {
     console.log(err)
     return res.status(422).json(err)
   }
-})
+}
 
 
 // Sandwich route - get one request 
 
-app.get('/schedule/:id', async (req, res) => {
+export const getOneSandwich = async (req, res) => {
   try {
     const { id } = req.params
     const singleSandwich = await SandwichOrder.findById(id)
@@ -33,4 +33,4 @@ app.get('/schedule/:id', async (req, res) => {
     console.log(err)
     return res.status(404).json({ 'message': 'not found' })
   }
-})
+}

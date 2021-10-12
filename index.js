@@ -1,12 +1,10 @@
 import express from 'express'
 import mongoose from 'mongoose'
-import SandwichOrder from './models/SandwichOrder.js'
+import SandwichOrder from './models/sandwichOrder.js'
 import { dbURI, port } from './config/environment.js'
-import router from './router.js'
+import router from './config/router.js'
 
 const app = express()
-const port = 4000
-const dbURI = 'mongodb://localhost/sandwich-api'
 
 app.use(express.json())// convert incoming JSON into JS and store on the req.body so we can access the data 
 
@@ -28,7 +26,6 @@ app.delete('/schedule/:id', async (req,res) => {
   }
 })
 
-
 // Logger -> to console log the incoming request method and the request url
 app.use((req, _res, next) => {
   console.log(`🚨 Incoming request: METHOD: ${req.method}, URL: ${req.url}`)
@@ -38,7 +35,7 @@ app.use((req, _res, next) => {
 const startServer = async () => {
   try {
     // * connect to db
-    await mongoose.connect(dbURI, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true })
+    await mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
     console.log('🚀 Database has connected successfully')
     // * establish server connection
     app.listen(port, () => console.log(`🚀 Express is up and running on port ${port}`))
@@ -49,6 +46,3 @@ const startServer = async () => {
 }
 
 startServer()
-
-
-app.listen(port, () => console.log(`Express is up and running on port ${port}`))

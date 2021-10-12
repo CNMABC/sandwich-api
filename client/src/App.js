@@ -1,16 +1,21 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 
-function App() {
-  React.useEffect(() => {
+
+const App = () => {
+  const [schedule, setSchedule] = useState([])
+
+  useEffect(() => {
     const getData = async () => {
-      const res = await axios.get('/api/endpoint') // * <-- replace with your endpoint
-      console.log(res.data)
+      const { data } = await axios.get('/api/schedule')
+      setSchedule(data)
     }
     getData()
   })
 
-  return <h1>Hello World</h1>
+  return (
+    <h1>Sandwich Schedule</h1>
+  )
 }
 
 export default App
